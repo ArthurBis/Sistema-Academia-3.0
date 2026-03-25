@@ -177,7 +177,7 @@ public class MenuTerminal {
             System.out.printf("ID: %d | %s (%s)\n", ex.getId(), ex.getNomePopular(), ex.getParteCorpo());
         }
 
-        // ALTERAÇÃO: Regra de máximo 6 exercícios por ficha
+        // ALTERAÇÃO: Regra de máximo 6 exercícios por ficha/semana
         while (ficha.getItens().size() < 6) {
             System.out.println("\nAdicionar exercício (" + (ficha.getItens().size() + 1) + "/6) na ficha? (s/n)");
             if (scanner.nextLine().equalsIgnoreCase("n")) break;
