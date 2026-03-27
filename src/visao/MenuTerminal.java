@@ -52,6 +52,7 @@ public class MenuTerminal {
             System.out.println("7. Renovar Mensalidade de um Aluno");
             System.out.println("8. Excluir Aluno do Sistema");
             System.out.println("9. Excluir Exercício do Sistema");
+            System.out.println("10. Listar Exercícios Cadastrados");
             System.out.println("0. Voltar");
             System.out.print("Escolha: ");
 
@@ -141,6 +142,10 @@ public class MenuTerminal {
                         }
                     }
                 }
+                else if (op == 10) {
+                    listarExerciciosFluxo();
+                }
+
                 else if (op == 0) {
                     break;
                 }
@@ -208,15 +213,32 @@ public class MenuTerminal {
     }
 
     private void menuAluno() {
-        // Regra: O aluno não treina sozinho e não toca no sistema
-        System.out.println("\n⚠️ AVISO: O aluno não opera o sistema. Treino deve ser acompanhado pelo professor.");
-        System.out.print("Digite o ID do Aluno: ");
-        try {
-            int id = Integer.parseInt(scanner.nextLine());
-            Ficha ficha = fichaDAO.buscarFichaRecentePorAluno(id);
+        System.out.println("\n⚠️ AVISO: O treino deve ser acompanhado obrigatoriamente pelo professor.");
+        System.out.print("Digite o seu CPF para acessar: ");
+        String cpf = scanner.nextLine();
+
+        // Agora buscamos o objeto Aluno completo pelo CPF primeiro
+        Aluno aluno = alunoDAO.buscarPorCpf(cpf);
+
+        if (aluno != null) {
+            // Usamos o ID do aluno encontrado para buscar a ficha
+            Ficha ficha = fichaDAO.buscarFichaRecentePorAluno(aluno.getId());
             mostrarFichaFormatada(ficha);
-        } catch (Exception e) {
-            System.out.println("ID inválido.");
+        } else {
+            System.out.println("❌ Erro: Não encontramos nenhum aluno cadastrado com o CPF: " + cpf);
+        }
+    }
+
+    private void listarExerciciosFluxo() {
+        System.out.println("\n--- CATÁLOGO DE EXERCÍCIOS ---");
+        List<Exercicio> lista = exercicioDAO.listarTodos();
+        if (lista.isEmpty()) {
+            System.out.println("Nenhum exercício cadastrado.");
+        } else {
+            for (Exercicio ex : lista) {
+                System.out.printf("ID: %d | %s (%s) - Grupo: %s\n",
+                        ex.getId(), ex.getNomePopular(), ex.getNomeTecnico(), ex.getParteCorpo());
+            }
         }
     }
 

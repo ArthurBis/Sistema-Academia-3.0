@@ -122,4 +122,26 @@ public class AlunoDAO {
             System.err.println("Erro de conexão: " + e.getMessage());
         }
     }
+
+    // Método para Buscar aluno por CPF ao invés de ID
+    public Aluno buscarPorCpf(String cpf) {
+        String sql = "SELECT * FROM alunos WHERE cpf = ?";
+        try (Connection conn = FabricaConexao.getConexao();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, cpf);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Aluno a = new Aluno();
+                a.setId(rs.getInt("id"));
+                a.setNome(rs.getString("nome"));
+                a.setCpf(rs.getString("cpf"));
+                a.setAltura(rs.getInt("altura")); // Lembre-se que mudamos para cm (int)
+                a.setDataVencimento(java.time.LocalDate.parse(rs.getString("data_vencimento")));
+                return a;
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar aluno por CPF: " + e.getMessage());
+        }
+        return null;
+    }
 }
