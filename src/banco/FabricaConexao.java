@@ -48,9 +48,6 @@ public class FabricaConexao {
                 aluno_id INTEGER,
                 semana TEXT,
                 observacoes_medicas TEXT,
-                peso REAL,
-                percentual_gordura REAL,
-                massa_magra REAL,
                 FOREIGN KEY (aluno_id) REFERENCES alunos(id)
             );
         """;

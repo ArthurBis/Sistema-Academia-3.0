@@ -168,13 +168,13 @@ public class MenuTerminal {
         ficha.setSemana(semana);
         ficha.setObservacoesMedicas(obs);
 
-        System.out.println("\n--- Avaliação Corporal ---");
-        System.out.print("Peso Atual (kg): ");
-        ficha.setPeso(Double.parseDouble(scanner.nextLine().replace(",", ".")));
-        System.out.print("Percentual de Gordura (%): ");
-        ficha.setPercentualGordura(Double.parseDouble(scanner.nextLine().replace(",", ".")));
-        System.out.print("Massa Magra (kg): ");
-        ficha.setMassaMagra(Double.parseDouble(scanner.nextLine().replace(",", ".")));
+//        System.out.println("\n--- Avaliação Corporal ---");
+//        System.out.print("Peso Atual (kg): ");
+//        ficha.setPeso(Double.parseDouble(scanner.nextLine().replace(",", ".")));
+//        System.out.print("Percentual de Gordura (%): ");
+//        ficha.setPercentualGordura(Double.parseDouble(scanner.nextLine().replace(",", ".")));
+//        System.out.print("Massa Magra (kg): ");
+//        ficha.setMassaMagra(Double.parseDouble(scanner.nextLine().replace(",", ".")));
 
         System.out.println("\n--- Exercícios Disponíveis ---");
         List<Exercicio> exercicios = exercicioDAO.listarTodos();
@@ -259,9 +259,9 @@ public class MenuTerminal {
             }
             System.out.println("Período: " + fichaCompleta.getSemana());
 
-            System.out.println("\n--- Avaliação Corporal ---");
-            System.out.printf("Peso: %.1f kg | Gordura: %.1f%% | Massa Magra: %.1f kg\n",
-                    fichaCompleta.getPeso(), fichaCompleta.getPercentualGordura(), fichaCompleta.getMassaMagra());
+//            System.out.println("\n--- Avaliação Corporal ---");
+//            System.out.printf("Peso: %.1f kg | Gordura: %.1f%% | Massa Magra: %.1f kg\n",
+//                    fichaCompleta.getPeso(), fichaCompleta.getPercentualGordura(), fichaCompleta.getMassaMagra());
 
             String obs = fichaCompleta.getObservacoesMedicas();
             System.out.println("Restrições: " + (obs == null || obs.isEmpty() ? "Nenhuma" : obs));

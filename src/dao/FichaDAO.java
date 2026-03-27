@@ -11,7 +11,8 @@ public class FichaDAO {
 
     public void salvarFicha(Ficha ficha) {
         // Atualizado com os 3 novos campos
-        String sqlFicha = "INSERT INTO fichas(aluno_id, semana, observacoes_medicas, peso, percentual_gordura, massa_magra) VALUES(?, ?, ?, ?, ?, ?)";
+        // Removidos: peso, percentual_gordura e massa_magra
+        String sqlFicha = "INSERT INTO fichas(aluno_id, semana, observacoes_medicas) VALUES(?, ?, ?)";
         String sqlItem = "INSERT INTO itens_ficha(ficha_id, exercicio_id, dia_semana, series, repeticoes, carga) VALUES(?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = FabricaConexao.getConexao()) {
@@ -21,9 +22,9 @@ public class FichaDAO {
                 stmtFicha.setInt(1, ficha.getAlunoId());
                 stmtFicha.setString(2, ficha.getSemana());
                 stmtFicha.setString(3, ficha.getObservacoesMedicas());
-                stmtFicha.setDouble(4, ficha.getPeso());
-                stmtFicha.setDouble(5, ficha.getPercentualGordura());
-                stmtFicha.setDouble(6, ficha.getMassaMagra());
+//                stmtFicha.setDouble(4, ficha.getPeso());
+//                stmtFicha.setDouble(5, ficha.getPercentualGordura());
+//                stmtFicha.setDouble(6, ficha.getMassaMagra());
                 stmtFicha.executeUpdate();
 
                 ResultSet rs = stmtFicha.getGeneratedKeys();
@@ -53,7 +54,7 @@ public class FichaDAO {
 
     public Ficha buscarFichaRecentePorAluno(int alunoId) {
         Ficha ficha = null;
-        String sqlFicha = "SELECT id, semana, observacoes_medicas, peso, percentual_gordura, massa_magra FROM fichas WHERE aluno_id = ? ORDER BY id DESC LIMIT 1";
+        String sqlFicha = "SELECT id, semana, observacoes_medicas FROM fichas WHERE aluno_id = ? ORDER BY id DESC LIMIT 1";
         String sqlItens = "SELECT i.dia_semana, e.nome_popular, i.series, i.repeticoes, i.carga FROM itens_ficha i JOIN exercicios e ON i.exercicio_id = e.id WHERE i.ficha_id = ? ORDER BY i.dia_semana";
 
         try (Connection conn = FabricaConexao.getConexao();
@@ -68,9 +69,9 @@ public class FichaDAO {
                 ficha.setAlunoId(alunoId);
                 ficha.setSemana(rsFicha.getString("semana"));
                 ficha.setObservacoesMedicas(rsFicha.getString("observacoes_medicas"));
-                ficha.setPeso(rsFicha.getDouble("peso"));
-                ficha.setPercentualGordura(rsFicha.getDouble("percentual_gordura"));
-                ficha.setMassaMagra(rsFicha.getDouble("massa_magra"));
+//                ficha.setPeso(rsFicha.getDouble("peso"));
+//                ficha.setPercentualGordura(rsFicha.getDouble("percentual_gordura"));
+//                ficha.setMassaMagra(rsFicha.getDouble("massa_magra"));
 
                 try (PreparedStatement stmtItens = conn.prepareStatement(sqlItens)) {
                     stmtItens.setInt(1, ficha.getId());
@@ -116,7 +117,7 @@ public class FichaDAO {
 
     public List<Ficha> listarTodasCompletas() {
         List<Ficha> listaFichas = new ArrayList<>();
-        String sqlFicha = "SELECT f.id, f.semana, f.observacoes_medicas, f.peso, f.percentual_gordura, f.massa_magra, a.nome " +
+        String sqlFicha = "SELECT f.id, f.semana, f.observacoes_medicas, a.nome " +
                 "FROM fichas f JOIN alunos a ON f.aluno_id = a.id ORDER BY f.id DESC";
 
         String sqlItens = "SELECT i.dia_semana, e.nome_popular, i.series, i.repeticoes, i.carga " +
@@ -132,9 +133,9 @@ public class FichaDAO {
                 ficha.setSemana(rsFicha.getString("semana"));
                 ficha.setObservacoesMedicas(rsFicha.getString("observacoes_medicas"));
                 ficha.setNomeAlunoTemporario(rsFicha.getString("nome"));
-                ficha.setPeso(rsFicha.getDouble("peso"));
-                ficha.setPercentualGordura(rsFicha.getDouble("percentual_gordura"));
-                ficha.setMassaMagra(rsFicha.getDouble("massa_magra"));
+//                ficha.setPeso(rsFicha.getDouble("peso"));
+//                ficha.setPercentualGordura(rsFicha.getDouble("percentual_gordura"));
+//                ficha.setMassaMagra(rsFicha.getDouble("massa_magra"));
 
                 try (PreparedStatement stmtItens = conn.prepareStatement(sqlItens)) {
                     stmtItens.setInt(1, ficha.getId());
